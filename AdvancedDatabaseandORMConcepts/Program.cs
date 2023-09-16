@@ -1,7 +1,18 @@
+using AdvancedDatabaseandORMConcepts.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<DataAnnotationContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DataAnnotationContext") ?? throw new InvalidOperationException("Connection string 'ControllersAndViewsContext' not found."));
+});
+
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
 
 var app = builder.Build();
 
